@@ -25,7 +25,7 @@ jobs:
         server: 3.35.207.240
         protocol: ftp
         port: 21
-        local-dir: ./ftpDeploy/
+        local-dir: ./
         server-dir: /home/ftp-user/ftpDeploy/
         username: ftp-user
         password: ${{ secrets.TEST_FTP_DEPLOY_KEY }}
