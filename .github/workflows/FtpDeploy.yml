@@ -29,6 +29,7 @@ jobs:
         server-dir: /home/ftp-user/ftpDeploy/
         username: ftp-user
         password: ${{ secrets.TEST_FTP_DEPLOY_KEY }}
+        log-level: verbose
         #exclude: .git*
         #  - .git*/**
         #  -  **/.git*/**
