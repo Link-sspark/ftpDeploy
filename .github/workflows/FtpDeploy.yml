@@ -14,15 +14,12 @@ jobs:
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2.3.2
-    steps:
     - name: Deploy module
       if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'module' }}
       run: echo Deploy module
-    stpes:
     - name: Deploy skin/front
       if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'skin_all' || github.event.inputs.target == 'skin_front' }}
       run: echo Deploy skin front
-    stpes:
     - name: Deploy skin/mobile
       if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'skin_all' || github.event.inputs.target == 'skin_mobile' }}
       run: echo Deploy skin mobile
