@@ -1,6 +1,5 @@
 # This is a basic workflow to help you get started with Actions
-
-name: Deploy_to_Test_Develop
+name: File list of main braches
 
 # Controls when the action will run. 
 on:
@@ -8,32 +7,13 @@ on:
   push:
     branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  web-deploy:
-    name: 🎉 Test Ftp Deploy
+  file-list:
+    name: 🎉 File list
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2.3.2
-    - name: pwd log
-      run: pwd
-    - name: ls log
-      run: ls -al
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
-      with:
-        server: 3.35.207.240
-        protocol: ftp
-        port: 21
-        # local-dir: ./
-        server-dir: /home/ftp-user/ftpDeploy/
-        username: ftp-user
-        password: ${{ secrets.TEST_FTP_DEPLOY_KEY }}
-        log-level: verbose
-        #exclude: .git*
-        #  - .git*/**
-        #  -  **/.git*/**
+    - name: File list
+      run: find .
