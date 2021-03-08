@@ -2,23 +2,52 @@ name: FTP Deploy
 on:
   workflow_dispatch:
     inputs:
-      branche:
-        description: 'target branche. [ main | develop ]'
+      target:
+        description: 'Select target. [ all | module | skin_all | skin_front | skin_mobile ]'
         required: true
-        default: develop
+        default: ''
 
 jobs:
   deploy:
-    name: Deploy ${{ github.event.inputs.branche }}
+    name: Deploy ${{ github.event.inputs.target }}
     runs-on: ubuntu-latest
     steps:
+    - id: env
+      name: Set destination server
+      shell: bash
+      run: |
+        if [ ${GITHUB_REF#refs/heads/} == 'main' ] || [ ${GITHUB_REF#refs/heads/} == 'master' ] ; then
+          echo env.DEPLOY_SERVER.PROD
+          echo ::set-output name=server::env.DEPLOY_SERVER.PROD
+        else
+          echo env.DEPLOY_SERVER.DEV
+          echo ::set-output name=server::env.DEPLOY_SERVER.DEV
+        fi
     - name: 🚚 Get latest code
       uses: actions/checkout@v2.3.2
+    - name: Deploy module
+      if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'module' }}
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        ref: ${{ github.event.inputs.branche }}
-    - name: cat Readme.md
-      run: cat Readme.md
-    
+        server: 3.35.207.240
+        protocol: ftp
+        port: 21
+        local-dir: ./module/
+        server-dir: /home/ftp-user/ftpDeploy/
+        username: ftp-user
+        password: ${{ secrets.TEST_FTP_DEPLOY_KEY }}
+        log-level: verbose
+        exclude: .git*
+          - .git*/**
+          -  **/.git*/**
+    - name: Deploy skin/front
+      if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'skin_all' || github.event.inputs.target == 'skin_front' }}
+      run: echo Deploy skin front
+    - name: Deploy skin/mobile
+      if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'skin_all' || github.event.inputs.target == 'skin_mobile' }}
+      run: echo Deploy skin mobile
+
+
 
 
 
