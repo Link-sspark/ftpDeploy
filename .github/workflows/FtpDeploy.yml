@@ -12,6 +12,9 @@ jobs:
     name: Deploy ${{ github.event.inputs.target }}
     runs-on: ubuntu-latest
     steps:
+    - name: Set destination server
+      shell: bash
+      run: echo "git branch= $GITHUB_REF"
     - name: 🚚 Get latest code
       uses: actions/checkout@v2.3.2
     - name: Deploy module
