@@ -12,9 +12,17 @@ jobs:
     name: Deploy ${{ github.event.inputs.target }}
     runs-on: ubuntu-latest
     steps:
-    - name: Set destination server
+    - id: env
+      name: Set destination server
       shell: bash
-      run: echo "git branch= ${GITHUB_REF#refs/heads/}"
+      run: |
+        if [ ${GITHUB_REF#refs/heads/} == 'main' ] || [ ${GITHUB_REF#refs/heads/} == 'master' ] ; then
+          echo ${env.DEPLOY_SERVER.PROD}
+          echo ::set-output name=server::env.DEPLOY_SERVER.PROD
+        else
+          echo ${env.DEPLOY_SERVER.DEV}
+          echo ::set-output name=server::env.DEPLOY_SERVER.DEV
+        fi
     - name: 🚚 Get latest code
       uses: actions/checkout@v2.3.2
     - name: Deploy module
