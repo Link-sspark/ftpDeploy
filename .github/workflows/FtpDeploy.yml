@@ -17,10 +17,10 @@ jobs:
       shell: bash
       run: |
         if [ ${GITHUB_REF#refs/heads/} == 'main' ] || [ ${GITHUB_REF#refs/heads/} == 'master' ] ; then
-          echo ${env.DEPLOY_SERVER.PROD}
+          echo env.DEPLOY_SERVER.PROD
           echo ::set-output name=server::env.DEPLOY_SERVER.PROD
         else
-          echo ${env.DEPLOY_SERVER.DEV}
+          echo env.DEPLOY_SERVER.DEV
           echo ::set-output name=server::env.DEPLOY_SERVER.DEV
         fi
     - name: 🚚 Get latest code
