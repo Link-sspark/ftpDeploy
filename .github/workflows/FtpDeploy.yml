@@ -8,10 +8,13 @@ on:
         default: ''
 
 env:
-  DEPLOY_SERVER_PROD: 255.255.255.255
-  DEPLOY_SERVER_DEV: 3.35.207.240
+  DEPLOY_SERVER: 0
   PROTOCOL: ftp
   PORT: 21
+  USERNAME: 0
+  PASSWORD: 0
+  PASSWORD_PROD: 0
+  PASSWORD_DEV: ${{ secrets.TEST_FTP_DEPLOY_KEY }}
 
 jobs:
   deploy:
@@ -23,12 +26,12 @@ jobs:
       shell: bash
       run: |
         if [ ${GITHUB_REF#refs/heads/} == 'main' ] || [ ${GITHUB_REF#refs/heads/} == 'master' ] ; then
-          echo "DEPLOY_SERVER=$DEPLOY_SERVER_PROD" >> $GITHUB_ENV
+          echo "DEPLOY_SERVER=255.255.255.255" >> $GITHUB_ENV
         else
-          echo "DEPLOY_SERVER=$DEPLOY_SERVER_DEV" >> $GITHUB_ENV
+          echo "DEPLOY_SERVER=3.35.207.240" >> $GITHUB_ENV
+          echo "USERNAME=ftp-user" >> $GITHUB_ENV
+          echo "PASSWORD=$PASSWORD_DEV" >> $GITHUB_ENV
         fi
-      env:
-        DEPLOY_SERVER: 0
     - name: Show destination server
       shell: bash
       run: echo "destination server= $DEPLOY_SERVER"
