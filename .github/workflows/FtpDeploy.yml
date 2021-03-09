@@ -7,6 +7,11 @@ on:
         required: true
         default: ''
 
+env:
+  DEPLOY_SERVER_PROD: 255.255.255.255
+  DEPLOY_SERVER_DEV: 3.35.207.240
+  DEPLOY_SERVER: 0
+
 jobs:
   deploy:
     name: Deploy ${{ github.event.inputs.target }}
@@ -14,20 +19,15 @@ jobs:
     steps:
     - id: env
       name: Set destination server
-      env:
-        DEPLOY_SERVER_PROD: ${{ env.DEPLOY_SERVER.PROD }}
-        DEPLOY_SERVER_DEV: ${{ env.DEPLOY_SERVER.DEV }}
-        DEPLOY_SERVER: 0
       shell: bash
       run: |
         if [ ${GITHUB_REF#refs/heads/} == 'main' ] || [ ${GITHUB_REF#refs/heads/} == 'master' ] ; then
-          echo ${{ env.DEPLOY_SERVER.PROD }}
-          echo ::set-output name=server::${{ env.DEPLOY_SERVER.PROD }}
+          echo $DEPLOY_SERVER_PROD
+          echo ::set-output name=server::$DEPLOY_SERVER_PROD
         else
-          echo $DEPLOY_SERVER_DEV
           echo ::set-output name=DEPLOY_SERVER::$DEPLOY_SERVER_DEV
-          echo '---print env.DEPLOY_SERVER ---'
-          echo ${{ env.DEPLOY_SERVER.DEV }}
+          echo '---print DEPLOY_SERVER_DEV ---'
+          echo $DEPLOY_SERVER_DEV
           echo '---print env 2---'
           env
         fi
