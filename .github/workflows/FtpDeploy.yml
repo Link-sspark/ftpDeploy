@@ -14,6 +14,10 @@ jobs:
     steps:
     - id: env
       name: Set destination server
+      env:
+        DEPLOY_SERVER_PROD: ${{ env.DEPLOY_SERVER.PROD }}
+        DEPLOY_SERVER_DEV: ${{ env.DEPLOY_SERVER.DEV }}
+        DEPLOY_SERVER: 0
       shell: bash
       run: |
         if [ ${GITHUB_REF#refs/heads/} == 'main' ] || [ ${GITHUB_REF#refs/heads/} == 'master' ] ; then
@@ -27,10 +31,6 @@ jobs:
           echo '---print env 2---'
           env
         fi
-      env:
-        DEPLOY_SERVER_PROD: ${{ env.DEPLOY_SERVER.PROD }}
-        DEPLOY_SERVER_DEV: ${{ env.DEPLOY_SERVER.DEV }}
-        DEPLOY_SERVER: 0
     - name: 🚚 Get latest code
       uses: actions/checkout@v2.3.2
     - name: Deploy module
