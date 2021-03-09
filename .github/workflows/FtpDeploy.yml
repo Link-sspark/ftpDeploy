@@ -54,8 +54,8 @@ jobs:
         server: ${{ env.DEPLOY_SERVER }}
         protocol: ${{ env.PROTOCOL }}
         port: ${{ env.PORT }}
-        local-dir: ${{ SRC_MODULE_DIR }}
-        server-dir: ${{ DST_MODULE_DIR }}
+        local-dir: ${{ env.SRC_MODULE_DIR }}
+        server-dir: ${{ env.DST_MODULE_DIR }}
         username: ${{ env.USERNAME }}
         password: ${{ env.PASSWORD }}
         log-level: verbose
