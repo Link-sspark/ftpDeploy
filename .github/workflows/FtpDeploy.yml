@@ -31,7 +31,7 @@ jobs:
         DEPLOY_SERVER: 0
     - name: Show destination server
       shell: bash
-      run: echo "destination server: $DEPLOY_SERVER"
+      run: echo "destination server= $DEPLOY_SERVER"
     - name: 🚚 Get latest code
       uses: actions/checkout@v2.3.2
     - name: Deploy module
