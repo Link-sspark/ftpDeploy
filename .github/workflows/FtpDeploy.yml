@@ -79,6 +79,7 @@ jobs:
           -  **/.git*/**
     - name: Deploy skin/mobile
       if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'skin_all' || github.event.inputs.target == 'skin_mobile' }}
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ${{ env.DEPLOY_SERVER }}
         protocol: ${{ env.PROTOCOL }}
