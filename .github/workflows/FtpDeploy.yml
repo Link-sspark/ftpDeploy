@@ -13,7 +13,17 @@ env:
   PORT: 21
   USERNAME: 0
   PASSWORD: 0
+  SRC_MODULE_DIR: ./module/
+  DST_MODULE_DIR: /module/
+  SRC_SKIN_FRONT_DIR: ./skin/front/
+  DST_SKIN_FRONT_DIR: /data/skin/front/deploy/
+  SRC_SKIN_MOBILE_DIR: ./skin/mobile/
+  DST_SKIN_MOBILE_DIR: /data/skin/mobile/deploy/
+  DEPLOY_SERVER_PROD: 255.255.255.255
+  USERNAME_PROD: 0
   PASSWORD_PROD: 0
+  DEPLOY_SERVER_DEV: 3.35.207.240
+  USERNAME_DEV: ftp-user
   PASSWORD_DEV: ${{ secrets.TEST_FTP_DEPLOY_KEY }}
 
 jobs:
@@ -28,8 +38,8 @@ jobs:
         if [ ${GITHUB_REF#refs/heads/} == 'main' ] || [ ${GITHUB_REF#refs/heads/} == 'master' ] ; then
           echo "DEPLOY_SERVER=255.255.255.255" >> $GITHUB_ENV
         else
-          echo "DEPLOY_SERVER=3.35.207.240" >> $GITHUB_ENV
-          echo "USERNAME=ftp-user" >> $GITHUB_ENV
+          echo "DEPLOY_SERVER=$DEPLOY_SERVER_DEV" >> $GITHUB_ENV
+          echo "USERNAME=$USERNAME_DEV" >> $GITHUB_ENV
           echo "PASSWORD=$PASSWORD_DEV" >> $GITHUB_ENV
         fi
     - name: Show destination server
@@ -42,19 +52,42 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ${{ env.DEPLOY_SERVER }}
-        protocol: ${{ env.protocol }}
-        port: ${{ env.port }}
-        local-dir: ./module/
-        server-dir: /home/ftp-user/ftpDeploy/
-        username: ftp-user
-        password: ${{ secrets.TEST_FTP_DEPLOY_KEY }}
+        protocol: ${{ env.PROTOCOL }}
+        port: ${{ env.PORT }}
+        local-dir: ${{ SRC_MODULE_DIR }}
+        server-dir: ${{ DST_MODULE_DIR }}
+        username: ${{ env.USERNAME }}
+        password: ${{ env.PASSWORD }}
         log-level: verbose
         exclude: .git*
           - .git*/**
           -  **/.git*/**
     - name: Deploy skin/front
       if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'skin_all' || github.event.inputs.target == 'skin_front' }}
-      run: echo Deploy skin front
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server: ${{ env.DEPLOY_SERVER }}
+        protocol: ${{ env.PROTOCOL }}
+        port: ${{ env.PORT }}
+        local-dir: ${{ env.SRC_SKIN_FRONT_DIR }}
+        server-dir: ${{ env.DST_SKIN_FRONT_DIR }}
+        username: ${{ env.USERNAME }}
+        password: ${{ env.PASSWORD }}
+        log-level: verbose
+        exclude: .git*
+          - .git*/**
+          -  **/.git*/**
     - name: Deploy skin/mobile
       if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'skin_all' || github.event.inputs.target == 'skin_mobile' }}
-      run: echo Deploy skin mobile
+      with:
+        server: ${{ env.DEPLOY_SERVER }}
+        protocol: ${{ env.PROTOCOL }}
+        port: ${{ env.PORT }}
+        local-dir: ${{ env.SRC_SKIN_MOBILE_DIR }}
+        server-dir: ${{ env.DST_SKIN_MOBILE_DIR }}
+        username: ${{ env.USERNAME }}
+        password: ${{ env.PASSWORD }}
+        log-level: verbose
+        exclude: .git*
+          - .git*/**
+          -  **/.git*/**
