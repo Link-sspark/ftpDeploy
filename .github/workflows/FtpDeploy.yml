@@ -23,7 +23,7 @@ jobs:
           echo ${{ env.DEPLOY_SERVER.DEV }}
           echo ::set-output name=server::${{ env.DEPLOY_SERVER.DEV }}
           echo '---print env.DEPLOY_SERVER ---'
-          echo ${{ env.DEPLOY_SERVER }}
+          echo ${{ env.DEPLOY_SERVER.DEV }}
           echo '---print env 2---'
           env
         fi
