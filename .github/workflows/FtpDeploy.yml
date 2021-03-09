@@ -27,6 +27,8 @@ jobs:
         else
           echo "DEPLOY_SERVER=$DEPLOY_SERVER_DEV" >> $GITHUB_ENV
         fi
+      env:
+        DEPLOY_SERVER: 0
     - name: Show destination server
       shell: bash
       run: echo "destination server: $DEPLOY_SERVER"
