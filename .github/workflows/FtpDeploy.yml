@@ -1,4 +1,4 @@
-name: FTP Deploy
+name: Fitpetmall-godo FTP Deploy  # FTP-Deploy-Action's url: https://github.com/marketplace/actions/ftp-deploy
 on:
   workflow_dispatch:
     inputs:
@@ -25,6 +25,7 @@ env:
   DEPLOY_SERVER_DEV: 3.35.207.240
   USERNAME_DEV: ftp-user
   PASSWORD_DEV: ${{ secrets.TEST_FTP_DEPLOY_KEY }}
+  LOG_LEVEL: verbose  # [minimal | standard | verbose]
 
 jobs:
   deploy:
@@ -58,7 +59,7 @@ jobs:
         server-dir: ${{ env.DST_MODULE_DIR }}
         username: ${{ env.USERNAME }}
         password: ${{ env.PASSWORD }}
-        log-level: verbose
+        log-level: ${{ env.LOG_LEVEL }}
         exclude: .git*
           - .git*/**
           -  **/.git*/**
@@ -73,7 +74,7 @@ jobs:
         server-dir: ${{ env.DST_SKIN_FRONT_DIR }}
         username: ${{ env.USERNAME }}
         password: ${{ env.PASSWORD }}
-        log-level: verbose
+        log-level: ${{ env.LOG_LEVEL }}
         exclude: .git*
           - .git*/**
           -  **/.git*/**
@@ -88,7 +89,7 @@ jobs:
         server-dir: ${{ env.DST_SKIN_MOBILE_DIR }}
         username: ${{ env.USERNAME }}
         password: ${{ env.PASSWORD }}
-        log-level: verbose
+        log-level: ${{ env.LOG_LEVEL }}
         exclude: .git*
           - .git*/**
           -  **/.git*/**
