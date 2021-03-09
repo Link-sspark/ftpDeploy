@@ -10,14 +10,15 @@ on:
 env:
   DEPLOY_SERVER_PROD: 255.255.255.255
   DEPLOY_SERVER_DEV: 3.35.207.240
-  DEPLOY_SERVER: 0
+  PROTOCOL: ftp
+  PORT: 21
 
 jobs:
   deploy:
     name: Deploy ${{ github.event.inputs.target }}
     runs-on: ubuntu-latest
     steps:
-    - id: env
+    - id: set-env
       name: Set destination server
       shell: bash
       run: |
@@ -26,9 +27,9 @@ jobs:
         else
           echo "DEPLOY_SERVER=$DEPLOY_SERVER_DEV" >> $GITHUB_ENV
         fi
-    - name: show env
+    - name: Show destination server
       shell: bash
-      run: printenv
+      run: echo "destination server: $DEPLOY_SERVER"
     - name: 🚚 Get latest code
       uses: actions/checkout@v2.3.2
     - name: Deploy module
@@ -36,8 +37,8 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ${{ env.DEPLOY_SERVER }}
-        protocol: ftp
-        port: 21
+        protocol: ${{ env.protocol }}
+        port: ${{ env.port }}
         local-dir: ./module/
         server-dir: /home/ftp-user/ftpDeploy/
         username: ftp-user
@@ -52,47 +53,3 @@ jobs:
     - name: Deploy skin/mobile
       if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'skin_all' || github.event.inputs.target == 'skin_mobile' }}
       run: echo Deploy skin mobile
-
-
-
-
-
-# This is a basic workflow to help you get started with Actions
-
-# name: Deploy_to_Test_Develop
-
-# # Controls when the action will run. 
-# on:
-#   # Triggers the workflow on push or pull request events but only for the main branch
-#   push:
-#     branches: [ main ]
-
-#   # Allows you to run this workflow manually from the Actions tab
-#   workflow_dispatch:
-
-# # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-# jobs:
-#   web-deploy:
-#     name: 🎉 Test Ftp Deploy
-#     runs-on: ubuntu-latest
-#     steps:
-#     - name: 🚚 Get latest code
-#       uses: actions/checkout@v2.3.2
-#     - name: pwd log
-#       run: pwd
-#     - name: ls log
-#       run: ls -al
-#     - name: 📂 Sync files
-#       uses: SamKirkland/FTP-Deploy-Action@4.0.0
-#       with:
-#         server: 3.35.207.240
-#         protocol: ftp
-#         port: 21
-#         local-dir: ./
-#         server-dir: /home/ftp-user/ftpDeploy/
-#         username: ftp-user
-#         password: ${{ secrets.TEST_FTP_DEPLOY_KEY }}
-#         log-level: verbose
-#         exclude: .git*
-#           - .git*/**
-#           -  **/.git*/**
