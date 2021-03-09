@@ -22,9 +22,11 @@ jobs:
       shell: bash
       run: |
         if [ ${GITHUB_REF#refs/heads/} == 'main' ] || [ ${GITHUB_REF#refs/heads/} == 'master' ] ; then
+          echo "DEPLOY_SERVER=$DEPLOY_SERVER_PROD" >> $GITHUB_ENV
           echo $DEPLOY_SERVER_PROD
-          echo ::set-output name=server::$DEPLOY_SERVER_PROD
+          echo ::set-output name=DEPLOY_SERVER::$DEPLOY_SERVER_PROD
         else
+          echo "DEPLOY_SERVER=$DEPLOY_SERVER_DEV" >> $GITHUB_ENV
           echo ::set-output name=DEPLOY_SERVER::$DEPLOY_SERVER_DEV
           echo '---print DEPLOY_SERVER_DEV ---'
           echo $DEPLOY_SERVER_DEV
