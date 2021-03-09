@@ -14,11 +14,11 @@ env:
   USERNAME: 0
   PASSWORD: 0
   SRC_MODULE_DIR: ./module/
-  DST_MODULE_DIR: /module/
+  DST_MODULE_DIR: /home/ftp-user/ftpDeploy/module/
   SRC_SKIN_FRONT_DIR: ./skin/front/
-  DST_SKIN_FRONT_DIR: /data/skin/front/deploy/
+  DST_SKIN_FRONT_DIR: /home/ftp-user/ftpDeploy/data/skin/front/deploy/
   SRC_SKIN_MOBILE_DIR: ./skin/mobile/
-  DST_SKIN_MOBILE_DIR: /data/skin/mobile/deploy/
+  DST_SKIN_MOBILE_DIR: /home/ftp-user/ftpDeploy/data/skin/mobile/deploy/
   DEPLOY_SERVER_PROD: 255.255.255.255
   USERNAME_PROD: 0
   PASSWORD_PROD: 0
