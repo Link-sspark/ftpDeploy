@@ -29,17 +29,18 @@ jobs:
           echo "DEPLOY_SERVER=$DEPLOY_SERVER_DEV" >> $GITHUB_ENV
           echo ::set-output name=DEPLOY_SERVER::$DEPLOY_SERVER_DEV
           echo '---print DEPLOY_SERVER_DEV ---'
-          echo $DEPLOY_SERVER_DEV
-          echo '---print env 2---'
-          env
+          echo ${{ env.DEPLOY_SERVER }}
         fi
+    - name: show env
+      shell: bash
+      run: printenv
     - name: 🚚 Get latest code
       uses: actions/checkout@v2.3.2
     - name: Deploy module
       if: ${{ github.event.inputs.target == 'all' || github.event.inputs.target == 'module' }}
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        server: 3.35.207.240
+        server: ${{ env.DEPLOY_SERVER }}
         protocol: ftp
         port: 21
         local-dir: ./module/
